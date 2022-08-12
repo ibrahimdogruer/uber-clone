@@ -1,4 +1,11 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -23,6 +30,7 @@ const HomeScreen = () => {
             // 'details' is provided when fetchDetails = true
             console.log(data, details);
           }}
+          onFail={error => console.error(error)}
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
           styles={{
