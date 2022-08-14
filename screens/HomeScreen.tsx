@@ -6,14 +6,19 @@ import {
   Text,
   View,
 } from "react-native";
+import { setDestination, setOrigin } from "../slices/navSlice";
 
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import NavFavourites from "../components/NavFavourites";
 import NavOptions from "../components/NavOptions";
 import React from "react";
-import tw from "tailwind-react-native-classnames";
+import tw from "twrnc";
+import { useDispatch } from "react-redux";
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView style={tw`bg-white h-full`}>
       <View style={tw`p-5`}>
@@ -27,12 +32,21 @@ const HomeScreen = () => {
         <GooglePlacesAutocomplete
           placeholder="Where From?"
           onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
-            console.log(data, details);
+            dispatch(
+              setOrigin({
+                location: details.geometry.location,
+                description: data.description,
+              })
+            );
+            dispatch(setDestination(null));
           }}
-          onFail={error => console.error(error)}
+          onFail={(error) => console.error(error)}
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
+          enablePoweredByContainer={false}
+          minLength={2}
+          fetchDetails={true}
+          textInputProps={{ returnKeyType: "search" }}
           styles={{
             container: {
               flex: 0,
@@ -48,6 +62,7 @@ const HomeScreen = () => {
         />
 
         <NavOptions />
+        <NavFavourites />
       </View>
     </SafeAreaView>
   );

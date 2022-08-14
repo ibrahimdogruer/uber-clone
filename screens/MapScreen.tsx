@@ -1,13 +1,46 @@
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from "react-native";
 
-import React from 'react'
+import { Icon } from "react-native-elements";
+import Map from "../components/Map";
+import NavigateCard from "../components/NavigateCard";
+import React from "react";
+import RideOptionsCard from "../components/RideOptionsCard";
+import { createStackNavigator } from "@react-navigation/stack";
+import tw from "twrnc";
+import { useNavigation } from "@react-navigation/native";
 
 const MapScreen = () => {
+  const Stack = createStackNavigator();
+  const navigation = useNavigation();
+
   return (
     <View>
-      <Text>MapScreen</Text>
-    </View>
-  )
-}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("HomeScreen" as never)}
+        style={tw`absolute top-12 left-4 bg-gray-100 z-50 p-2 rounded-full shadow-lg`}
+      >
+        <Icon name="menu" tvParallaxProperties={null} />
+      </TouchableOpacity>
 
-export default MapScreen
+      <View style={tw`h-1/2`}>
+        <Map />
+      </View>
+      <View style={tw`h-1/2`}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="NavigateCard"
+            component={NavigateCard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RideOptionsCard"
+            component={RideOptionsCard}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </View>
+    </View>
+  );
+};
+
+export default MapScreen;
